@@ -4,7 +4,6 @@ from heapq import heappush, heappop
 
 
 def median_sliding_window(numbers: List[int], k: int) -> List[float]:
-
     def find_median():
         res = -max_heap[0] if k ^ 1 else min_heap[0] - max_heap[0]
         return float(res)
@@ -57,5 +56,5 @@ if __name__ == "__main__":
     k = 3
     expected = [1.00000, -1.00000, -1.00000, 3.00000, 5.00000, 6.00000]
     actual = median_sliding_window(numbers, k)
-    print("Actual:   " + ', '.join(str(x) for x in actual))
-    print("Expected: " + ', '.join(str(x) for x in expected))
+    print("Actual:   " + ", ".join(str(x) for x in actual))
+    print("Expected: " + ", ".join(str(x) for x in expected))
