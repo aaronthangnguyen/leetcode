@@ -5,54 +5,49 @@ from typing import List
 from heapq import heapify, heappush, heappop
 
 
-class Edge:
-    def __init__(self, point1: int, point2: int, cost: int):
-        self.point1 = point1
-        self.point2 = point2
-        self.cost = cost
-
-    def __lt__(self, other: "Edge"):
-        return self.cost < other.cost
-
-
-def min_cost_to_connect_all_points(points: List[List[int]]) -> int:
+def prim(points: List[List[int]]) -> int:
+    """
+    1. Pick starting vertex
+    2. Find edges that connect to new vertices, find minimum and add to MST
+    3. Repeat until n - 1 edges
+    """
     if not points:
         return 0
 
-    size = len(points)
-    pq = []
-    visited = set()
-    res = 0
-    count = size - 1
-
+    n = len(points)
+    heap = []
     x1, y1 = points[0]
-    for i in range(1, size):
-        x2, y2 = points[i]
-        cost = abs(x1 - x2) + abs(y1 - y2)
-        edge = Edge(0, i, cost)
-        pq.append(edge)
 
-    heapify(pq)
+    for p2 in range(1, n):
+        x2, y2 = points[p2]
+        d = abs(x1 - x2) + abs(y1 - y2)
+        heap.append((d, 0, p2))
+    heapify(heap)
 
-    visited.add(0)
-    while pq and count > 0:
-        edge = heappop(pq)
-        point1 = edge.point1
-        point2 = edge.point2
-        cost = edge.cost
-        if point2 not in visited:
-            res += cost
-            visited.add(point2)
-            for i in range(size):
-                if i not in visited:
-                    new_x1, new_y1 = points[point2]
-                    new_x2, new_y2 = points[i]
-                    new_cost = abs(new_x1 - new_x2) + abs(new_y1 - new_y2)
-                    heappush(pq, Edge(point2, i, new_cost))
-            count -= 1
+    res = 0
+    visited = set([0])
+    count = n - 1
+
+    while heap and count > 0:
+        d, p1, p2 = heappop(heap)
+        if p2 in visited:
+            continue
+        res += d
+        visited.add(p2)
+
+        for p3 in range(n):
+            if p3 in visited:
+                continue
+            x2, y2 = points[p2]
+            x3, y3 = points[p3]
+            d2 = abs(x2 - x3) + abs(y2 - y3)
+            heappush(heap, (d2, p2, p3))
+
+        count -= 1
+
     return res
 
 
 if __name__ == "__main__":
     points = [[0, 0], [2, 2], [3, 10], [5, 2], [7, 0]]
-    print(min_cost_to_connect_all_points(points))
+    print(prim(points))
