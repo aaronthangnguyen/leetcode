@@ -1,5 +1,5 @@
 # 23. Merge k Sorted Lists
-# O(_) time, O(_) space
+# O(n log k) time, O(k) space
 
 from typing import List, Optional, Self
 from heapq import heapify, heappush, heappop
