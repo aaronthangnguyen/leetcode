@@ -23,7 +23,7 @@ def smallest(arrays: List[List[int]]) -> List[int]:
         _, row, col = heappop(heap)
         array = arrays[row]
 
-        if col >= len(array) - 1:
+        if col == len(array) - 1:
             break
 
         next = array[col + 1]
